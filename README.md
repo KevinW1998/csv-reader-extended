@@ -40,7 +40,7 @@ int main()
         
         csv_reader
             .ReadDataLine(&test_string, &answer, &five)
-            .ReadDataLine(CSVDiscard(), &world_string);
+            .ReadDataLine(CSVReader::CSVDiscard(), &world_string);
         
         std::cout << test_string << " " << answer << " " << five << " " << world_string << std::endl;
     } catch (const std::exception& err) {
