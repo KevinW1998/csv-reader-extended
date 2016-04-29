@@ -65,6 +65,9 @@ str - A basic_string (std::string/std::wstring) containing text to parse
 ```cpp
 auto reader = CSVReader::MakeStringReader("This is a test,42,5\nHello,World");
 ```
+<br />
+<br />
+
 
 #### CSVReader::MakeIfStreamReader ####
 A reader, which parses a input file stream.
@@ -80,6 +83,9 @@ reader - A basic_ifstream (std::ifstream/std::wifstream) for reading out of a fi
 std::ifstream fileReader("test.csv", std::ios::in | std::ios::binary);
 auto reader = CSVReader::MakeIfStreamReader(&fileReader);
 ```
+<br />
+<br />
+
 
 #### CSVReader::MakeDirectReader ####
 A direct reader, which reads out a string, but ignores any newlines.
@@ -94,4 +100,6 @@ data - Any class, which represents a string.
 ```cpp
 auto reader = CSVReader::MakeDirectReader("This is a test,42,5\nHello,World");
 ```
+<br />
+<br />
 
