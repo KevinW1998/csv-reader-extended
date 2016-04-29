@@ -16,7 +16,7 @@ Following features are provided in this library:
 
 - C++11 support
 
-This library successfully compiled on following compiler:
+This library was successfully compiled on following compiler:
 
 - Visual Studio 2015 Update 2
 - MinGW 4.9.2
@@ -48,3 +48,50 @@ int main()
     }
 }
 ```
+
+## Reference ##
+
+### Creating a Reader ###
+#### CSVReader::MakeStringReader ####
+A reader, which parses a string.
+##### Definition: #####
+```cpp
+template<class StrElementType, class StrElementTraits, class StrElementAlloc>
+constexpr StringReader<StrElementType, StrElementTraits, StrElementAlloc> MakeStringReader(const std::basic_string<StrElementType, StrElementTraits, StrElementAlloc>& str)
+```
+str - A basic_string (std::string/std::wstring) containing text to parse
+
+##### Example: #####
+```cpp
+auto reader = CSVReader::MakeStringReader("This is a test,42,5\nHello,World");
+```
+
+#### CSVReader::MakeIfStreamReader ####
+A reader, which parses a input file stream.
+##### Definition: #####
+```cpp
+template<class StrElementType, class StrElementTraits>
+constexpr IfStreamReader<StrElementType, StrElementTraits> MakeIfStreamReader(std::basic_ifstream<StrElementType, StrElementTraits>* reader)
+```
+reader - A basic_ifstream (std::ifstream/std::wifstream) for reading out of a file stream.
+
+##### Example: #####
+```cpp
+std::ifstream fileReader("test.csv", std::ios::in | std::ios::binary);
+auto reader = CSVReader::MakeIfStreamReader(&fileReader);
+```
+
+#### CSVReader::MakeDirectReader ####
+A direct reader, which reads out a string, but ignores any newlines.
+##### Definition: #####
+```cpp
+template<class StrT>
+constexpr DirectReader<StrT> MakeDirectReader(const StrT& data)
+```
+data - Any class, which represents a string.
+
+##### Example: #####
+```cpp
+auto reader = CSVReader::MakeDirectReader("This is a test,42,5\nHello,World");
+```
+
