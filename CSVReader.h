@@ -821,7 +821,7 @@ namespace CSVReader {
         typedef typename csv_reader_type::value_type value_type;
 
         static_assert(std::is_same<CharT, value_type>::value, "Value type of basic_string must be the same as the type of the seperator!");
-        return csv_reader_type::full_type(reader, sep);
+        return typename csv_reader_type::full_type(reader, sep);
     }
 
 
