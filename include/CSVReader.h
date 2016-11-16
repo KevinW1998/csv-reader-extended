@@ -420,7 +420,7 @@ namespace CSVReader {
                     continue;
                 ContainerValueT to;
                 this->SafeConvert(&to, from);
-                idef::invoke_or_noop<void>(_postProcessorFunction, *to);
+                idef::invoke_or_noop<void>(_postProcessorFunction, to);
                 ContainerUtils::Add(_container, to);
             }
         }
