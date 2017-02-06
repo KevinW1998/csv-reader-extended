@@ -51,5 +51,53 @@ TEST_CASE("Test Optional", "[csv-reader]") {
     REQUIRE(num == 21);
 }
 
+TEST_CASE("Sub Reader", "[csv-reader]") {
+    auto reader = CSVReader::MakeStringReader(std::string("test1|test2|test3.1,test3.2,test3.3|test4"));
+    auto csv_reader = CSVReader::MakeCSVReaderFromBasicString(&reader, '|');
+
+    std::string test32_value;
+    csv_reader.ReadDataLine(
+                CSVReader::CSVDiscard(),
+                CSVReader::CSVDiscard(),
+                CSVReader::MakeCSVSubReader(csv_reader, ',',
+                                            CSVReader::CSVDiscard(),
+                                            &test32_value,
+                                            CSVReader::CSVDiscard()
+                                            )
+                );
+    REQUIRE(test32_value == "test3.2");
+}
+
+TEST_CASE("Sub Reader Optional", "[csv-reader]") {
+    auto reader = CSVReader::MakeStringReader(std::string("test1|test2\n"
+                                                          "test1|test2|test3.1,test3.2,test3.3|test4\n"));
+    auto csv_reader = CSVReader::MakeCSVReaderFromBasicString(&reader, '|');
+
+    std::string optionalSub = "none";
+    std::string optional_test4 = "none";
+
+    auto read_step = [&]{
+        csv_reader.ReadDataLine(
+                    CSVReader::CSVDiscard(),
+                    CSVReader::CSVDiscard(),
+                    CSVReader::MakeCSVOptionalSubReader(csv_reader, ',',
+                                                        CSVReader::CSVDiscard(),
+                                                        &optionalSub,
+                                                        CSVReader::CSVDiscard()
+                                                        ),
+                    CSVReader::MakeCSVOptional(&optional_test4, "none_overwrite")
+                    );
+    };
+
+    read_step();
+    REQUIRE(optionalSub == "none");
+    REQUIRE(optional_test4 == "none_overwrite");
+
+    read_step();
+    REQUIRE(optionalSub == "test3.2");
+    REQUIRE(optional_test4 == "test4");
+
+
+}
 
 

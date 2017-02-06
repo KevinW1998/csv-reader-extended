@@ -9,3 +9,6 @@ CTestTestfile.cmake
 
 # Custom
 build*
+
+# Qt
+CMakeLists.txt.user
