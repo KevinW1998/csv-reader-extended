@@ -11,4 +11,6 @@ CTestTestfile.cmake
 build*
 
 # Qt
-CMakeLists.txt.user
+*.user
+*.user.*
+
