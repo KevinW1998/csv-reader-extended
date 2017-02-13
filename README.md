@@ -20,6 +20,8 @@ This library was successfully compiled on following compiler:
 
 - Visual Studio 2015 Update 2
 - MinGW 4.9.2
+- GCC 4.8.1
+- CLang 3.3
 
 ## Example ##
 
@@ -31,17 +33,17 @@ int main()
 {
     auto reader = CSVReader::MakeStringReader("This is a test,42,5\nHello,World");
     auto csv_reader = CSVReader::MakeCSVReaderFromBasicString(&reader, ',')
-    
+
     try {
         std::string test_string;
         int answer;
         double five;
         std::string world_string;
-        
+
         csv_reader
             .ReadDataLine(&test_string, &answer, &five)
             .ReadDataLine(CSVReader::CSVDiscard(), &world_string);
-        
+
         std::cout << test_string << " " << answer << " " << five << " " << world_string << std::endl;
     } catch (const std::exception& err) {
         std::cout << "Error while parsing: " << err.what() << std::endl;
