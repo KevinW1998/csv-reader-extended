@@ -51,6 +51,28 @@ TEST_CASE("Test Optional", "[csv-reader]") {
     REQUIRE(num == 21);
 }
 
+TEST_CASE("Test Optional and Optional Empty", "[csv-reader]") {
+    auto reader = CSVReader::MakeStringReader(std::string("test1|test2||test3\n"
+                                                          "test1|test2||test3\n"));
+    auto csv_reader = CSVReader::MakeCSVReaderFromBasicString(&reader, '|');
+
+    std::string thirdElement;
+    csv_reader.ReadDataLine(
+                CSVReader::CSVDiscard(),
+                CSVReader::CSVDiscard(),
+                CSVReader::MakeCSVOptional(&thirdElement, "Hello")
+                );
+
+    REQUIRE(thirdElement == "");
+
+    csv_reader.ReadDataLine(
+                CSVReader::CSVDiscard(),
+                CSVReader::CSVDiscard(),
+                CSVReader::MakeCSVOptionalEmpty(&thirdElement, "Hello")
+                );
+    REQUIRE(thirdElement == "Hello");
+}
+
 TEST_CASE("Sub Reader", "[csv-reader]") {
     auto reader = CSVReader::MakeStringReader(std::string("test1|test2|test3.1,test3.2,test3.3|test4"));
     auto csv_reader = CSVReader::MakeCSVReaderFromBasicString(&reader, '|');
@@ -96,8 +118,22 @@ TEST_CASE("Sub Reader Optional", "[csv-reader]") {
     read_step();
     REQUIRE(optionalSub == "test3.2");
     REQUIRE(optional_test4 == "test4");
-
-
 }
+
+TEST_CASE("Read by iteration", "[csv-reader-iteration]") {
+    auto reader = CSVReader::MakeStringReader(std::string("test1|test2|test3\n"));
+    auto csv_reader = CSVReader::MakeCSVReaderFromBasicString(&reader, '|');
+
+    int index = 1;
+    csv_reader.IterateDataLine([&index](const std::string& next) {
+        switch(index) {
+            case 1: REQUIRE(next == "test1"); break;
+            case 2: REQUIRE(next == "test2"); break;
+            case 3: REQUIRE(next == "test3"); break;
+        }
+        index++;
+    });
+}
+
 
 
